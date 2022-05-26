@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div#success {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div id="success">
+    <div>
+        <img src="/super_weapon.png" width="300">
+    </div>
+    <div>
+        <p th:text="'무기 공격력 : ' + ${strength}"></p>
+    </div>
+</div>
+</body>
+</html>

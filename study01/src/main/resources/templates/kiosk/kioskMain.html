@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>kiosk-main</title>
+</head>
+<style>
+    .row{
+        display: flex;
+        width: 200px;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+    .col>*{
+        width: auto;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+    }
+    .col{
+        margin: 10px;
+        cursor: pointer;
+    }
+    img{
+        width: 120px;
+        height: 120px;
+    }
+    button{
+        width: 100%;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .flex{
+        display: flex;
+        align-items: center;
+    }
+    input{
+        border: 0px;
+        width: 20px;
+    }
+    input#total{
+        width: 50px;
+    }
+</style>
+<body>
+<form action="/ex/kiosk" method="post" name="frm">
+    <div class="row">
+        <div class="col">
+            <p class="product" id="ramen">라면</p>
+            <img src="/kiosk/ramen.jpeg" alt="">
+            <div class="flex"><p class="price">4000</p>원</div>
+        </div>
+        <div class="col">
+            <p class="product" id="dumpling">만두</p>
+            <img src="/kiosk/dumpling.jpeg" alt="">
+            <div class="flex"><p class="price">3000</p>원</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="product" id="d">떡볶이</p>
+            <img src="/kiosk/d.jpeg" alt="">
+            <div class="flex"><p class="price">2000</p>원</div>
+        </div>
+        <div class="col">
+            <p class="product" id="coke">콜라</p>
+            <img src="/kiosk/coke1.jpeg" alt="">
+            <div class="flex"><p class="price">1000</p>원</div>
+        </div>
+    </div>
+    <div class="row">
+        <button>주문하기</button>
+    </div>
+    <div class="flex"><input type="text" id="total" name="totalPrice" value="0" readonly/>원</div>
+    <div id="list"></div>
+</form>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("div.col").on("click", function () {
+        let product = $(this).find(".product").attr("id");
+        let price = $(this).find(".price").text();
+
+        addList(product, price);
+    })
+
+    function addList(product, price){
+        let result = 0;
+        if($("#list>p#"+ product).length){
+            //해당 제품의 값이 존재한다면
+            let $count = $("#list>p#"+ product + ">#count");
+            let count = $count.val();
+            $count.val(parseInt(count) + 1);
+
+            result = parseInt($('#total').val()) + parseInt(price);
+            $('#total').val(result);
+        }else{
+            let kor = $("#"+product).text();
+            $("#list").append("<p id='"+product + "'>" +
+                kor + " X " +
+                "<input id='count' name='"+
+                product+"' value='1' readonly></input></p>");
+
+            result = parseInt($('#total').val()) + parseInt(price);
+            $('#total').val(result);
+        }
+
+    }
+</script>
+</html>

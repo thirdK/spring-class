@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>5번입니다.</h1>
+<form action="" name="frm">
+    <div><input type="button" value="1번 버튼" class="btn"></div>
+    <div><input type="button" value="2번 버튼" class="btn"></div>
+    <div><input type="button" value="3번 버튼" class="btn"></div>
+    <div><input type="button" value="4번 버튼" class="btn"></div>
+    <div><input type="button" value="5번 버튼" class="btn"></div>
+</form>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('input').on("click", function(){
+        let num = $(this).val().substring(0,1);
+        console.log(num);
+        $('form[name="frm"]').attr("action", "/ex/move"+num);
+        $('form[name="frm"]').submit();
+    })
+</script>
+</html>

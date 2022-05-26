@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div#superSuccess {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div id="superSuccess">
+    <div>
+        <div>
+            <img src="/super_weapon.png" width="300">
+        </div>
+        <div style="position: absolute; top: 0;">
+            <img src="/happy.png" width="50">
+        </div>
+    </div>
+    <div>
+        <p th:text="'무기 공격력 : ' + ${strength}"></p>
+    </div>
+</div>
+</body>
+</html>

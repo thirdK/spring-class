@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="" name="checkIn">
+        <input type="text" name="name">
+        <button id="getToWork">출근</button>
+        <button id="leaveWork">퇴근</button>
+    </form>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let $form = $(document.checkIn);
+    $("#getToWork").click(function(){
+        $form.attr("action", "/ex/getToWork")
+        $form.submit();
+    });
+
+    $("#leaveWork").click(function(){
+        $form.attr("action", "/ex/leaveWork")
+        $form.submit();
+    });
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
