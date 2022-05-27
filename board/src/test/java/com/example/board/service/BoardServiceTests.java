@@ -1,6 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.domain.vo.BoardVO;
+import com.example.board.domain.vo.Criteria;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,9 @@ public class BoardServiceTests {
     private BoardService boardService;
 
 //    @Test
-//    public void getListTest(){
-//        boardService.getList().stream().map(BoardVO::toString).forEach(log::info);
-//    }
+    public void getListTest(){
+        boardService.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
+    }
 
 //    @Test
 //    public void registerTest(){
@@ -46,20 +47,27 @@ public class BoardServiceTests {
 //        log.info("DELETE FAIL");
 //    }
 
+//    @Test
+//    public void modifyTest(){
+//        Long boardBno = 3L;
+//        BoardVO boardVO = boardService.read(boardBno);
+//        if(boardVO == null) { log.info("NO BOARD"); return;}
+//
+//        boardVO.setBoardTitle("수정된 게시글 제목3");
+//        boardVO.setBoardContent("수정된 게시글 내용3");
+//        boardVO.setBoardWriter("한동석");
+//
+//        if(boardService.modify(boardVO)){
+//            log.info("UPDATE SUCCESS");
+//        }else{
+//            log.info("UPDATE FAIL");
+//        }
+//    }
+
     @Test
-    public void modifyTest(){
-        Long boardBno = 3L;
-        BoardVO boardVO = boardService.read(boardBno);
-        if(boardVO == null) { log.info("NO BOARD"); return;}
-
-        boardVO.setBoardTitle("수정된 게시글 제목3");
-        boardVO.setBoardContent("수정된 게시글 내용3");
-        boardVO.setBoardWriter("한동석");
-
-        if(boardService.modify(boardVO)){
-            log.info("UPDATE SUCCESS");
-        }else{
-            log.info("UPDATE FAIL");
-        }
+    public void getTotalPageTest(){
+        log.info("=====================================================");
+        log.info(Integer.valueOf(boardService.getTotalPage()).toString());
+        log.info("=====================================================");
     }
 }

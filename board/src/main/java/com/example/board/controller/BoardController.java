@@ -1,6 +1,8 @@
 package com.example.board.controller;
 
 import com.example.board.domain.vo.BoardVO;
+import com.example.board.domain.vo.Criteria;
+import com.example.board.domain.vo.PageDTO;
 import com.example.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /*
@@ -31,12 +35,20 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/list")
-    public void getList(Model model){
+//    리턴 타입을 void로 작성해도 되지만,
+//    다른 컨트롤러에서 getList()를 호출하기 때문에
+//    html 경로를 직접 문자열로 작성해야 한다.
+    public String getList(Criteria criteria, Model model){
         log.info("**************************");
         log.info("/list");
         log.info("**************************");
-        model.addAttribute("boardList", boardService.getList());
+        model.addAttribute("boardList", boardService.getList(criteria));
+        model.addAttribute("pageDTO", new PageDTO(criteria, boardService.getTotalPage()));
+        return "/board/list";
     }
+
+    @GetMapping("/register")
+    public void register(){}
 
     /*redirect방식으로 값을 전달할 때는 쿼리스트링, flash*/
     @PostMapping("/register")
@@ -56,13 +68,13 @@ public class BoardController {
         return new RedirectView("/board/list");
     }
 
-    @GetMapping("/read")
-    public String read(Long boardBno, Model model){
+    @GetMapping({"/read", "/modify"})
+    public void read(Long boardBno, HttpServletRequest request, Model model){
         log.info("**************************");
-        log.info("/read");
+        String requestURL = request.getRequestURI();
+        log.info(requestURL.substring(requestURL.lastIndexOf("/")));
         log.info("**************************");
         model.addAttribute("board", boardService.read(boardBno));
-        return "/board/list";
     }
     
 //    수정
@@ -75,7 +87,19 @@ public class BoardController {
         log.info("**************************");
         String result = boardService.modify(boardVO) ? "Success" : "fail";
         rttr.addFlashAttribute("result", result);
-        return new RedirectView("/board/modify");
+        return new RedirectView("list");
     }
-    
+
+    @PostMapping("/remove")
+    public String remove(Long boardBno, Criteria criteria, Model model){
+        log.info("**************************");
+        log.info("/remove");
+        log.info("**************************");
+        boardService.remove(boardBno);
+//        다른 컨트롤러로 이동하고자 할 때 해당 메소드를 직접 실행한다.
+//        만약 필요한 파라미터가 있다면 최초 요청 처리 메소드를 통해 파라미터를 전달해준다.
+        return getList(criteria, model);
+    }
+
+
 }

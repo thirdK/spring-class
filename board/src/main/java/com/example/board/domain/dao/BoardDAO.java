@@ -1,6 +1,7 @@
 package com.example.board.domain.dao;
 
 import com.example.board.domain.vo.BoardVO;
+import com.example.board.domain.vo.Criteria;
 import com.example.board.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,8 +16,8 @@ public class BoardDAO {
 
 
     //    게시글 목록
-    public List<BoardVO> getList() {
-        return boardMapper.getList();
+    public List<BoardVO> getList(Criteria criteria) {
+        return boardMapper.getList(criteria);
     }
 
     //    게시글 등록
@@ -38,4 +39,6 @@ public class BoardDAO {
     public boolean modify(BoardVO boardVO){
         return boardMapper.update(boardVO) != 0;
     }
+
+    public int getTotalPage(){ return boardMapper.getTotalPage();}
 }

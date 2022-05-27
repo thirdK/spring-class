@@ -2,6 +2,8 @@ package com.example.board.service;
 
 import com.example.board.domain.dao.BoardDAO;
 import com.example.board.domain.vo.BoardVO;
+import com.example.board.domain.vo.Criteria;
+import com.example.board.domain.vo.PageDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,11 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<BoardVO> getList() {
-        return boardDAO.getList();
+    public List<BoardVO> getList(Criteria criteria) {
+        return boardDAO.getList(criteria);
     }
+
+    @Override
+    public int getTotalPage() { return boardDAO.getTotalPage();}
+
 }

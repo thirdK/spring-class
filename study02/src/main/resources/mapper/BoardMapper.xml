@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.study02.mapper.BoardMapper">
+    <select id="getList" resultType="boardVO">
+        SELECT BOARD_BNO, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGISTER_DATE, BOARD_UPDATE_DATE
+        FROM TBL_BOARD
+    </select>
+
+    <insert id="insert">
+--      DB 테이블 연결 자동으로 되는건가?
+--      PK만 가능하다 DUAL은 오라클에서 제공해주는 테스트용 테이블인데 여기서 왜 사용한건지 모르겠다
+        <selectKey keyProperty="boardBno" resultType="long" order="BEFORE">
+            SELECT SEQ_BOARD.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_BOARD(BOARD_BNO, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER)
+        VALUES (#{boardBno}, #{boardTitle}, #{boardContent}, #{boardWriter})
+    </insert>
+
+    <select id="get" resultType="boardVO">
+        SELECT BOARD_BNO, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGISTER_DATE, BOARD_UPDATE_DATE
+        FROM TBL_BOARD
+        WHERE BOARD_BNO = #{boardBno}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM TBL_BOARD
+        WHERE BOARD_BNO = #{boardBno}
+    </delete>
+
+    <update id="update">
+        UPDATE TBL_BOARD
+        SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT= #{boardContent}, BOARD_UPDATE_DATE=SYSDATE
+        WHERE BOARD_BNO = #{boardBno}
+    </update>
+</mapper>

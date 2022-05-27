@@ -28,13 +28,15 @@ public class BoardControllerTests {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    //    @Test
+    @Test
     public void getListTest() throws Exception {
-        log.info(mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
-                .andReturn().getModelAndView().getModelMap().toString());
+        log.info(mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+                .param("pageNum", "39")
+                .param("amount", "10")
+        ).andReturn().getModelAndView().getModelMap().toString());
     }
 
-    //    @Test
+    //        @Test
     public void registerTest() throws Exception {
         log.info("추가된 게시글 번호 : " + mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
                 .param("boardTitle", "테스트 새 글 제목")
@@ -50,7 +52,7 @@ public class BoardControllerTests {
                 .andReturn().getModelAndView().getModelMap().toString());
     }
 
-    @Test
+    //    @Test
     public void modifyTest() throws Exception {
         log.info(mockMvc.perform(MockMvcRequestBuilders.post("/board/modify")
                 .param("boardBno", "2")
@@ -59,4 +61,13 @@ public class BoardControllerTests {
         ).andReturn().getFlashMap().toString());
 
     }
+
+    //    @Test
+    public void removeTest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/board/remove")
+                        .param("boardBno", "7")
+        ).andReturn().getModelAndView().getViewName();
+    }
+
 }
