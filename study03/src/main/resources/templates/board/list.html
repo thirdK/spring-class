@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        a{
+            cursor: pointer;
+            color: red;
+        }
+        .page-block {
+            display: flex;
+            justify-content: center;
+        }
+
+        .inner-block{
+            display: flex;
+            text-align: center;
+            align-items: center;
+        }
+
+        .num {
+            margin: 5px;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .col {
+            width: 100%;
+            margin: 10px;
+        }
+
+        .inner-wrap {
+            width: 800px;
+            margin: auto;
+        }
+
+        .wrap {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="inner-wrap">
+        <form action="/board/register">
+            <button>글쓰기</button>
+            <div class="row">
+                <div class="col">게시물 번호</div>
+                <div class="col">게시물 제목</div>
+                <div class="col">글쓴이</div>
+                <div class="col">작성 시간</div>
+                <div class="col">수정 시간</div>
+            </div>
+            <th:block th:each="board:${boardList}">
+                <div class="row" th:object="${board}">
+                    <div class="col" th:text="*{boardBno}"></div>
+                    <div class="col">
+                        <a th:text="*{boardTitle}"
+                           th:href="@{/board/read(boardBno=*{boardBno})}">
+                        </a>
+                    </div>
+                    <div class="col" th:text="*{boardWriter}"></div>
+                    <div class="col" th:text="*{boardRegisterDate}"></div>
+                    <div class="col" th:text="*{boardUpdateDate}"></div>
+                </div>
+            </th:block>
+        </form>
+        <div class="page-block" th:object="${pageDTO}">
+            <div class="inner-block">
+                <a th:if="*{prev}"><div>&lt;</div></a>
+                <th:block th:each="num:${#numbers.sequence(pageDTO.startPage, pageDTO.endPage)}">
+                    <div th:if="${num == pageDTO.criteria.pageNum}" class="num" th:text="${num}"></div>
+                    <a th:unless="${num == pageDTO.criteria.pageNum}" ><div class="num" th:text="${num}"></div></a>
+                </th:block>
+                <a th:if="*{next}"><div>&gt;</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    let boardBno = [[${boardBno}]];
+    if (boardBno != null) {
+        alert(boardBno + "번 글이 등록되었습니다.");
+    }
+</script>
+</html>
