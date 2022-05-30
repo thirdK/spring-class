@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        a{
+            cursor: pointer;
+            color: tomato;
+            text-decoration: none;
+        }
+        .row{
+            display: flex;
+            justify-content: center;
+        }
+        .row-button{
+            display: flex;
+            margin-top: 10px;
+            margin-right: 40px;
+            justify-content: right;
+        }
+        .inner-wrap{
+            margin: 100px auto;
+            width: 1000px;
+        }
+        .wrap{
+            width: 100%;
+        }
+
+        .col{
+            margin: 5px;
+            width: 200px;
+        }
+        .inner-block{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+        .page{
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="inner-wrap">
+        <form action="/board/register">
+
+            <div class="row">
+                <div class="col">번호</div>
+                <div class="col">제목</div>
+                <div class="col">글쓴이</div>
+                <div class="col">작성일</div>
+                <div class="col">수정일</div>
+            </div>
+            <th:block th:each="board:${boardList}">
+            <div class="row" th:object="${board}">
+                <div class="col" th:text="*{boardBno}"></div>
+                <a th:href="@{/board/read(boardBno=*{boardBno})}"><div class="col" th:text="*{boardTitle}"></div></a>
+                <div class="col" th:text="*{boardWriter}"></div>
+                <div class="col" th:text="*{boardRegisterDate}"></div>
+                <div class="col" th:text="*{boardUpdateDate}"></div>
+            </div>
+            </th:block>
+            <div class="row-button">
+                <button>글 쓰기</button>
+            </div>
+        </form>
+        <div class="page-block">
+            <div class="inner-block" th:object="${pageDTO}">
+                <a href="" th:if="*{prev}"><div>&lt;</div></a>
+                <th:block th:each="num:${#numbers.sequence(pageDTO.startPage, pageDTO.endPage)}">
+                    <div class="page" th:text="${num}"></div>
+                </th:block>
+                <a href="" th:if="*{next}"><div>&gt;</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

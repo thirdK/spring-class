@@ -1,6 +1,7 @@
 package com.example.study04.domain.dao;
 
 import com.example.study04.domain.vo.BoardVO;
+import com.example.study04.domain.vo.Criteria;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class BoardDaoTests {
 
     @Test
     public void getListTest(){
-        boardDAO.getList().stream().map(BoardVO::toString).forEach(log::info);
+        boardDAO.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
     }
 
     @Test

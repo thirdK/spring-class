@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .row{
+            display: flex;
+            margin: 10px;
+        }
+        .row>.col:nth-child(1){
+            width: 60px;
+        }
+        button{
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="inner-wrap">
+        <form action="/board/modify" method="post" th:object="${board}">
+            <input type="text" th:field="*{boardBno}" readonly hidden/>
+            <div class="row">
+                <div class="col">글쓴이</div>
+                <div class="col">
+                    <input type="text" th:field="*{boardWriter}" readonly/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">제목</div>
+                <div class="col">
+                    <input type="text" th:field="*{boardTitle}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">내용</div>
+                <div class="col">
+                    <textarea cols="30" rows="10" th:field="*{boardContent}"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit">수정완료</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

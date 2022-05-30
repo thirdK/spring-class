@@ -1,4 +1,4 @@
-package com.example.study04.mapper;
+package com.example.study04.service;
 
 import com.example.study04.domain.vo.BoardVO;
 import com.example.study04.domain.vo.Criteria;
@@ -9,18 +9,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Slf4j
-public class BoardMapperTests {
+public class BoardServiceTests {
     @Autowired
-    private BoardMapper boardMapper;
+    private BoardService boardService;
 
     @Test
     public void getListTest(){
-        boardMapper.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
+        boardService.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
     }
 
     @Test
     public void get(){
-        log.info(boardMapper.get(40L).toString());
+        log.info(boardService.read(71L).toString());
     }
 
     @Test
@@ -29,19 +29,19 @@ public class BoardMapperTests {
         boardVO.setBoardTitle("04 테스트");
         boardVO.setBoardContent("마지막 04 테스트");
         boardVO.setBoardWriter("xxxxxxxx");
-        boardMapper.insert(boardVO);
+        boardService.register(boardVO);
     }
 
     @Test
     public void delete(){
-        boardMapper.delete(136L);
+        boardService.remove(71L);
     }
 
     @Test
     public void update(){
-        BoardVO boardVO = boardMapper.get(135L);
+        BoardVO boardVO = boardService.read(6L);
         boardVO.setBoardTitle("xxxxxxxxxxxxxxxx");
         boardVO.setBoardContent("수정한다다다다다다다다xxxxxxxxxxxxxxx");
-        boardMapper.update(boardVO);
+        boardService.modify(boardVO);
     }
 }

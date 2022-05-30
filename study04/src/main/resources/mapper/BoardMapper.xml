@@ -2,8 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.study04.mapper.BoardMapper">
     <select id="getList" resultType="boardVO">
+        <![CDATA[
         SELECT BOARD_BNO, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGISTER_DATE, BOARD_UPDATE_DATE
+        FROM(
+        SELECT /*+ INDEX_DESC(TBL_BOARD TBL_BOARD_PK) */
+        ROWNUM RN, BOARD_BNO, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER, BOARD_REGISTER_DATE, BOARD_UPDATE_DATE
         FROM TBL_BOARD
+        WHERE ROWNUM <= #{pageNum} * #{amount}
+        )
+        WHERE RN > ( #{pageNum} - 1) * #{amount}
+        ]]>
     </select>
 
     <select id="get" resultType="boardVO">
@@ -13,9 +21,12 @@
     </select>
 
     <insert id="insert" >
+        <selectKey keyProperty="boardBno" resultType="long" order="BEFORE">
+            SELECT SEQ_BOARD.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO TBL_BOARD
         (BOARD_BNO, BOARD_TITLE, BOARD_CONTENT, BOARD_WRITER)
-        VALUES(SEQ_BOARD.NEXTVAL, #{boardTitle}, #{boardContent}, #{boardWriter})
+        VALUES(#{boardBno}, #{boardTitle}, #{boardContent}, #{boardWriter})
     </insert>
 
     <delete id="delete">
@@ -28,4 +39,8 @@
         SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, BOARD_UPDATE_DATE = SYSDATE
         WHERE BOARD_BNO = #{boardBno}
     </update>
+
+    <select id="getTotal" resultType="_int">
+        SELECT COUNT(BOARD_BNO) FROM TBL_BOARD
+    </select>
 </mapper>
