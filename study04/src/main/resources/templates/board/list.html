@@ -24,7 +24,7 @@
         }
         .inner-wrap{
             margin: 100px auto;
-            width: 1000px;
+            width: auto;
         }
         .wrap{
             width: 100%;
@@ -34,14 +34,27 @@
             margin: 5px;
             width: 200px;
         }
-        .inner-block{
-            display: flex;
+        div.inner-block{
             align-items: center;
             justify-content: center;
-
         }
         .page{
             margin: 5px;
+        }
+        div.small-width {display: none;}
+        div.big-width {display: flex;}
+
+        @media (max-width : 918px){
+            .boardUpdateDate,
+            .boardBno{
+                display: none;
+            }
+            div.small-width{ display: flex;}
+            div.big-width{ display: none;}
+            div.inner-block{
+                align-items: center;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -51,35 +64,79 @@
         <form action="/board/register">
 
             <div class="row">
-                <div class="col">번호</div>
+                <div class="col boardBno">번호</div>
                 <div class="col">제목</div>
                 <div class="col">글쓴이</div>
                 <div class="col">작성일</div>
-                <div class="col">수정일</div>
+                <div class="col boardUpdateDate">수정일</div>
             </div>
             <th:block th:each="board:${boardList}">
             <div class="row" th:object="${board}">
-                <div class="col" th:text="*{boardBno}"></div>
-                <a th:href="@{/board/read(boardBno=*{boardBno})}"><div class="col" th:text="*{boardTitle}"></div></a>
+                <div class="col boardBno" th:text="*{boardBno}"></div>
+                <a th:href="*{boardBno}" class="goRead"><div class="col" th:text="*{boardTitle}"></div></a>
                 <div class="col" th:text="*{boardWriter}"></div>
                 <div class="col" th:text="*{boardRegisterDate}"></div>
-                <div class="col" th:text="*{boardUpdateDate}"></div>
+                <div class="col boardUpdateDate" th:text="*{boardUpdateDate}"></div>
             </div>
             </th:block>
             <div class="row-button">
                 <button>글 쓰기</button>
             </div>
         </form>
+        <form action="/board/list" name="searchForm">
+            <div >
+                <select name="type">
+                    <option value="">검색 기준</option>
+                    <option value="TCW">전체</option>
+                    <option value="T">제목</option>
+                    <option value="C">내용</option>
+                    <option value="W">작성자</option>
+                    <option value="TC">제목 + 내용</option>
+                    <option value="TW">제목 + 작성자</option>
+                    <option value="CW">내용 + 작성자</option>
+                </select>
+                <input type="text" name="keyword">
+                <a href="">검색</a>
+            </div>
+        </form>
         <div class="page-block">
-            <div class="inner-block" th:object="${pageDTO}">
-                <a href="" th:if="*{prev}"><div>&lt;</div></a>
+            <div class="inner-block big-width" th:object="${pageDTO}">
+                <a class="changePage" th:href="*{startPage - 1}" th:if="*{prev}"><div>&lt;</div></a>
                 <th:block th:each="num:${#numbers.sequence(pageDTO.startPage, pageDTO.endPage)}">
-                    <div class="page" th:text="${num}"></div>
+                    <div class="page" th:if="${num == pageDTO.criteria.pageNum}" th:text="${num}"></div>
+                    <a class="changePage" th:href="${num}" th:unless="${num == pageDTO.criteria.pageNum}"><div class="page" th:text="${num}"></div></a>
                 </th:block>
-                <a href="" th:if="*{next}"><div>&gt;</div></a>
+                <a class="changePage" th:href="*{endPage + 1}" th:if="*{next}"><div>&gt;</div></a>
+            </div>
+            <div class="inner-block small-width" th:object="${pageDTO}">
+                <a class="changePage" th:href="*{startPage - 1}" th:if="*{criteria.pageNum > 1}"><div>&lt;</div></a>
+                    <div th:text="*{criteria.pageNum}"></div>
+                <a class="changePage" th:href="*{endPage + 1}" th:if="*{criteria.pageNum < realEnd}"><div>&gt;</div></a>
             </div>
         </div>
+        <form action="/board/list" name="pageForm" th:object="${criteria}">
+            <input type="hidden" th:field="*{pageNum}">
+            <input type="hidden" th:field="*{amount}">
+            <input type="hidden" th:field="*{type}">
+            <input type="hidden" th:field="*{keyword}">
+
+        </form>
     </div>
 </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:inline="javascript">
+    let paging = [[${criteria.listLink}]];
+    $(".changePage").on("click", function(e){
+        e.preventDefault();
+        $(pageForm).find("input[name=pageNum]").val($(this).attr('href'));
+        $(pageForm).submit();
+    });
+
+    $(".goRead").on("click", function(e){
+        e.preventDefault();
+
+        location.href = "/board/read" + paging +"&boardBno="+$(this).attr('href');
+    })
+</script>
 </html>

@@ -53,9 +53,15 @@ public class BoardMapperTests {
 //    }
 
     @Test
-    public void totalPaget(){
+    public void totalPage(){
         log.info("=====================================================");
         log.info(Integer.valueOf(boardMapper.getTotalPage()).toString());
         log.info("=====================================================");
     }
+
+    @Test
+    public void myTotalTest(){
+        log.info(boardMapper.getMyTotal(new Criteria()) + "");
+    }
+
 }

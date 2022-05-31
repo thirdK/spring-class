@@ -25,4 +25,6 @@ public interface BoardMapper {
 
 //    게시글 전체 수
     public int getTotalPage();
+
+    public int getMyTotal(Criteria criteria);
 }

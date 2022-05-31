@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.board.mapper.ReplyMapper">
+    <insert id="insert">
+        INSERT INTO TBL_REPLY
+        (REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER)
+        VALUES(SEQ_REPLY.NEXTVAL, #{boardBno}, #{replyContent}, #{replyWriter})
+    </insert>
+
+    <select id="getByReplyNumber" resultType="replyVO">
+        SELECT REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER, REPLY_REGISTER_DATE, REPLY_UPDATE_DATE
+        FROM TBL_REPLY
+        WHERE REPLY_NUMBER = #{replyNumber}
+    </select>
+
+    <select id="getByBoardBno" resultType="replyVO">
+        SELECT REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER, REPLY_REGISTER_DATE, REPLY_UPDATE_DATE
+        FROM TBL_REPLY
+        WHERE BOARD_BNO = #{boardBno}
+    </select>
+</mapper>

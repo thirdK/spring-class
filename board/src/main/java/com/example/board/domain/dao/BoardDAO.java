@@ -41,4 +41,6 @@ public class BoardDAO {
     }
 
     public int getTotalPage(){ return boardMapper.getTotalPage();}
+
+    public int getMyTotal(Criteria criteria) { return boardMapper.getMyTotal(criteria) ; }
 }

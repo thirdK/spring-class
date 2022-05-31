@@ -42,4 +42,8 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public int getTotalPage() { return boardDAO.getTotalPage();}
 
+    @Override
+    public int getMyTotal(Criteria criteria) {
+        return boardDAO.getMyTotal(criteria) ;
+    }
 }

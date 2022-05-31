@@ -17,11 +17,15 @@
         button{
             margin: 10px;
         }
+        a{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 <div class="wrap">
     <div class="inner-wrap">
+        <h3><a id="goList">목록으로</a></h3>
         <form action="/board/remove" th:object="${board}">
             <div class="row">
                 <div class="col">번호</div>
@@ -54,10 +58,18 @@
         </form>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script th:inline="javascript">
+    let paging = [[${criteria.listLink}]];
+    let boardBno = [[${board.boardBno}]];
+
+    $('#goList').on('click', function(e) {
+        e.preventDefault();
+        location.href = "/board/list" + paging;
+    });
     function goModify(){
-        let boardBno = [[${board.boardBno}]];
-        location.href="/board/modify?boardBno=" + boardBno;
+        location.href="/board/modify" + paging + "&boardBno=" + boardBno;
     }
 </script>
 </body>

@@ -31,9 +31,14 @@ public class BoardController {
     }
 
     @GetMapping({"/read", "/modify"})
-    public void read(Long boardBno, HttpServletRequest request, Model model){
+    public void read(Long boardBno, Criteria criteria, HttpServletRequest request, Model model){
         String requestURL = request.getRequestURI();
         log.info(requestURL.substring(requestURL.lastIndexOf("/")));
+        log.info("------------------------------------------------------");
+        log.info(criteria.getPageNum()+"");
+        log.info(criteria.getAmount()+"");
+        log.info(boardBno + "");
+        log.info("------------------------------------------------------");
         model.addAttribute("board", boardService.read(boardBno));
     }
 
@@ -48,9 +53,12 @@ public class BoardController {
     }
 
     @PostMapping("/modify")
-    public RedirectView modify(BoardVO boardVO){
+    public RedirectView modify(BoardVO boardVO, Criteria criteria, RedirectAttributes rttr){
         boardService.modify(boardVO);
-        return new RedirectView("/board/list");
+        rttr.addAttribute("boardBno", boardVO.getBoardBno());
+        rttr.addAttribute("pageNum", criteria.getPageNum());
+        rttr.addAttribute("amount", criteria.getAmount());
+        return new RedirectView("/board/read");
     }
 
     @GetMapping("/remove")
