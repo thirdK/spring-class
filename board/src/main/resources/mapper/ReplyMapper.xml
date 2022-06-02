@@ -37,7 +37,6 @@
 
     <select id="getList" resultType="replyVO">
         <![CDATA[
-
                 SELECT REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER, REPLY_REGISTER_DATE, REPLY_UPDATE_DATE
                 FROM
                     (
@@ -47,7 +46,6 @@
                         WHERE BOARD_BNO = #{boardBno} AND ROWNUM <= #{criteria.pageNum} * #{criteria.amount}
                     )
                 WHERE RN > (#{criteria.pageNum} -1) * #{criteria.amount}
-
         ]]>
     </select>
 

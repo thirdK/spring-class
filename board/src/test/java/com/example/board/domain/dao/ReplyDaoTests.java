@@ -1,4 +1,4 @@
-package com.example.board.mapper;
+package com.example.board.domain.dao;
 
 import com.example.board.domain.vo.Criteria;
 import com.example.board.domain.vo.ReplyVO;
@@ -11,20 +11,20 @@ import java.util.Arrays;
 
 @SpringBootTest
 @Slf4j
-public class ReplyMapperTests {
+public class ReplyDaoTests {
     @Autowired
-    private ReplyMapper replyMapper;
+    private ReplyDAO replyDAO;
 
 
 
     @Test
-    public void replyMapperTest(){
-        log.info(replyMapper + "");
+    public void replyDAOTest(){
+        log.info(replyDAO + "");
     }
 
     @Test
-    public void insertTest(){
-        Long[] recent = replyMapper.getRecentBoardBno();
+    public void registerTest(){
+        Long[] recent = replyDAO.getRecentBoardBno();
         ReplyVO replyVO = new ReplyVO();
 
         Arrays.stream(recent).map(String::valueOf).forEach(log::info);
@@ -34,7 +34,7 @@ public class ReplyMapperTests {
                 replyVO.setBoardBno(i);
                 replyVO.setReplyContent("최근 글 테스트2222");
                 replyVO.setReplyWriter("user03");
-                replyMapper.insert(replyVO);
+                replyDAO.register(replyVO);
             }
         });
 
@@ -44,26 +44,27 @@ public class ReplyMapperTests {
     }
 
     @Test
-    public void getReply(){
-        log.info(replyMapper.getReply(1L).toString());
+    public void readTest(){
+        log.info(replyDAO.read(1L).toString());
+    }
+
+
+    @Test
+    public void removeTest(){
+        replyDAO.remove(33L);
     }
 
     @Test
-    public void deleteTest(){
-        replyMapper.delete(3L);
-    }
-
-    @Test
-    public void updateTest(){
+    public void modifyTest(){
         ReplyVO replyVO = new ReplyVO();
-        replyVO.setReplyNumber(2L);
+        replyVO.setReplyNumber(32L);
         replyVO.setReplyContent("수정테스트");
-        log.info(replyMapper.update(replyVO) + "");
+        log.info(replyDAO.modify(replyVO) + "");
     }
 
     @Test
     public void getListTest(){
-        replyMapper.getList(new Criteria(2, 10), 212L)
+        replyDAO.getList(new Criteria(2, 10), 212L)
                 .stream().map(ReplyVO::toString).forEach(log::info);
     }
 }
