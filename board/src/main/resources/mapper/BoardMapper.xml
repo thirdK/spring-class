@@ -92,4 +92,17 @@
         </trim>
         </where>
     </select>
+
+    <select id="getRecentBoardBno" resultType="long">
+        <![CDATA[
+        SELECT BOARD_BNO
+        FROM
+        (
+        SELECT /*+ INDEX_DESC(TBL_BOARD TBL_BOARD_PK)*/
+        ROWNUM, BOARD_BNO
+        FROM TBL_BOARD
+        WHERE ROWNUM <= 5
+        )
+        ]]>
+    </select>
 </mapper>

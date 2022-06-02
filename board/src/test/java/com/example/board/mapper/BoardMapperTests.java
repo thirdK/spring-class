@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+
 @SpringBootTest
 @Slf4j
 public class BoardMapperTests {
@@ -34,13 +36,13 @@ public class BoardMapperTests {
 //        log.info(boardMapper.get(boardBno).toString());
 //    }
 //
-//    @Test
-//    public void deleteTest(){
-//        Long boardBno = 3L;
-////        log.info("DELETE COUNT : " + boardMapper.delete(boardBno));
-//        boardMapper.delete(boardBno);
-//        getListTest();
-//    }
+    //    @Test
+    //    public void deleteTest(){
+    //        Long boardBno = 3L;
+    ////        log.info("DELETE COUNT : " + boardMapper.delete(boardBno));
+    //        boardMapper.delete(boardBno);
+    //        getListTest();
+    //    }
 //
 //    @Test
 //    public void updateTest(){
@@ -64,4 +66,8 @@ public class BoardMapperTests {
         log.info(boardMapper.getMyTotal(new Criteria()) + "");
     }
 
+    @Test
+    public void recentBoardBnoTest(){
+        Arrays.stream(boardMapper.getRecentBoardBno()).map(String::valueOf).forEach(log::info);
+    }
 }

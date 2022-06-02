@@ -7,6 +7,12 @@
         VALUES(SEQ_REPLY.NEXTVAL, #{boardBno}, #{replyContent}, #{replyWriter})
     </insert>
 
+    <select id="getReply" resultType="replyVO">
+        SELECT REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER, REPLY_REGISTER_DATE, REPLY_UPDATE_DATE
+        FROM TBL_REPLY
+        WHERE REPLY_NUMBER = #{replyNumber}
+    </select>
+
     <select id="getByReplyNumber" resultType="replyVO">
         SELECT REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER, REPLY_REGISTER_DATE, REPLY_UPDATE_DATE
         FROM TBL_REPLY
@@ -18,4 +24,44 @@
         FROM TBL_REPLY
         WHERE BOARD_BNO = #{boardBno}
     </select>
+
+    <delete id="delete">
+        DELETE FROM TBL_REPLY WHERE REPLY_NUMBER = #{replyNumber}
+    </delete>
+
+    <update id="update">
+        UPDATE TBL_REPLY
+        SET REPLY_CONTENT = #{replyContent}, REPLY_UPDATE_DATE = SYSDATE
+        WHERE REPLY_NUMBER = #{replyNumber}
+    </update>
+
+    <select id="getList" resultType="replyVO">
+        <![CDATA[
+
+                SELECT REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER, REPLY_REGISTER_DATE, REPLY_UPDATE_DATE
+                FROM
+                    (
+                        SELECT /*+ INDEX_DESC(TBL_REPLY PK_REPLY) */
+                        ROWNUM RN, REPLY_NUMBER, BOARD_BNO, REPLY_CONTENT, REPLY_WRITER, REPLY_REGISTER_DATE, REPLY_UPDATE_DATE
+                        FROM TBL_REPLY
+                        WHERE BOARD_BNO = #{boardBno} AND ROWNUM <= #{criteria.pageNum} * #{criteria.amount}
+                    )
+                WHERE RN > (#{criteria.pageNum} -1) * #{criteria.amount}
+
+        ]]>
+    </select>
+
+    <select id="getRecentBoardBno" resultType="long">
+        <![CDATA[
+        SELECT BOARD_BNO
+        FROM
+        (
+        SELECT /*+ INDEX_DESC(TBL_BOARD TBL_BOARD_PK)*/
+        ROWNUM, BOARD_BNO
+        FROM TBL_BOARD
+        WHERE ROWNUM <= 5
+        )
+        ]]>
+    </select>
+
 </mapper>

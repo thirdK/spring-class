@@ -27,4 +27,6 @@ public interface BoardMapper {
     public int getTotalPage();
 
     public int getMyTotal(Criteria criteria);
+
+    public Long[] getRecentBoardBno();
 }
