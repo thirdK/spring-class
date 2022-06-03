@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.board.mapper.TboardMapper">
+    <select id="get" resultType="tboardVO">
+        SELECT TBOARD_NUMBER, TBOARD_TITLE, TBOARD_CONTENT, TBOARD_WRITER, TBOARD_REGISTER_DATE, TBOARD_UPDATE_DATE
+        FROM TBL_TBOARD
+        WHERE TBOARD_NUMBER = #{tboardNumber}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO TBL_TBOARD
+        (TBOARD_NUMBER, TBOARD_TITLE, TBOARD_CONTENT, TBOARD_WRITER)
+        VALUES(SEQ_TBOARD.NEXTVAL, #{tboardTitle}, #{tboardContent}, #{tboardWriter})
+    </insert>
+
+    <select id="getList" resultType="tboardVO">
+        SELECT TBOARD_NUMBER, TBOARD_TITLE, TBOARD_CONTENT, TBOARD_WRITER, TBOARD_REGISTER_DATE, TBOARD_UPDATE_DATE
+        FROM TBL_TBOARD
+    </select>
+
+    <delete id="delete">
+        DELETE FROM TBL_TBOARD
+        WHERE TBOARD_NUMBER = #{tboardNumber}
+    </delete>
+
+    <update id="update">
+        UPDATE TBL_TBOARD
+        SET TBOARD_TITLE = #{tboardTitle}, TBOARD_CONTENT = #{tboardContent}, TBOARD_UPDATE_DATE = SYSDATE
+        WHERE TBOARD_NUMBER = #{tboardNumber}
+    </update>
+</mapper>

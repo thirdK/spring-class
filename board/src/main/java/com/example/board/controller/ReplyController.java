@@ -56,17 +56,17 @@ public class ReplyController {
 
 //    댓글 삭제
     @DeleteMapping("/{rno}")
-    public boolean remove(@PathVariable("rno") Long replyNumber){
+    public String remove(@PathVariable("rno") Long replyNumber){
         log.info("remove............." + replyNumber);
-        return replyService.remove(replyNumber);
+        return replyService.remove(replyNumber) ? "댓글삭제 성공" : "댓글삭제 실패";
     }
 
 //    댓글 수정
     @PostMapping("/replyModify")
-    public boolean modify(@RequestBody ReplyVO replyVO){
+    public String modify(@RequestBody ReplyVO replyVO){
         log.info("modify..............." + replyVO.getReplyContent());
         log.info("modify..............." + replyVO.getReplyNumber());
-        return replyService.modify(replyVO);
+        return replyService.modify(replyVO)?"수정완료":"수정실패";
     }
 //    댓글 수정
 //    PUT : 자원의 전체 수정, 자원 내 모든 필드를 전달해야 함, 일부만 전달할 경우 오류
@@ -83,4 +83,5 @@ public class ReplyController {
         replyService.modify(replyVO);
         return "댓글 수정 성공";
     }
+
 }

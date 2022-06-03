@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>TBOARD Main 페이지</h1>
+    <div class="test1"></div>
+    <div class="test2"></div>
+    <div class="test3"></div>
+    <div class="test4"></div>
+    <div class="test5"></div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/tboard.js"></script>
+<script>
+    $(document).ready(function(){
+        tboardService.test1(function(result){
+            $(".test1").text(result);
+        })
+
+        tboardService.test2(function (result) {
+            $(".test2").text(result.tboardTitle + ", " + result.tboardContent + ", " + result.tboardWriter);
+        })
+
+        tboardService.test3("13", function (result) {
+            $(".test3").text(result);
+        })
+
+        tboardService.test4({tboardTitle:"수정전 타이틀", tboardContent:"수정전 내용", tboardWriter:"수정전 작성자"}, function (result) {
+            $(".test4").text(result.tboardTitle + ", " + result.tboardContent + ", " + result.tboardWriter);
+        })
+
+        tboardService.test5({writer:"임태종", re:"범위수정"}, function (result) {
+            console.log(result);
+        })
+    })
+</script>
+
+</html>

@@ -1,17 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 <body>
-<input type="text" class="input">
+<div>
+    <h1>ajax test</h1>
+</div>
+<div>
+    <input type="text" class="box" size="50">
+</div>
+<div>
+    <button onclick="test2()">버튼</button>
+</div>
+<div>
+    <hr>
+    <div>test3</div>
+    <div id="test3"></div>
+    <hr>
+    <div>test4</div>
+    <div id="test4"></div>
+    <hr>
+    <div>test5</div>
+    <div id="test5"></div>
+</div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/assets/js/test.js"></script>
 <script>
-    $(document).ready(function(){
-        test1.run(callback);
+    $(document).ready(function () {
+        testService.test1(function(result){
+            alert(result);
+        });
+
+        testService.test3(function (result) {
+            console.log(result);
+            $("#test3").text(result.name + "   " + result.age);
+        })
+
+        testService.test4({name:"ㅎㅎㅎ", age:"20"}, function(result){
+            console.log(result);
+            $("#test4").text(result.name + "   " + result.age);
+        })
+
+        testService.test5({a:"aa", b:"bb", c:"cc"}, function(result){
+            console.log(result);
+            $("#test5").text(result[0] + "   " + result[1] + "   " + result[2]);
+        })
     })
+
+    function test2(){
+        testService.test2("전달하는 문자열입니다." ,function(result){
+           $(".box").val(result);
+        });
+    }
+
+
+
 </script>
 </html>

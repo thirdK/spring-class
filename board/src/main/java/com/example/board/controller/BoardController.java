@@ -145,6 +145,7 @@ public class BoardController {
         //redirect방식이 아닌 forward방식으로 이동할 때에는 컨트롤러를 거치지 않기 때문에
         //forward방식으로 컨트롤러에 거치기 위해 해당 메소드를 직접 호출한다.(어차피 getList()의 반환값도 문자열)
     }
+
 }
 
 

@@ -82,6 +82,37 @@
         e.preventDefault();
         location.href = "/board/list" + paging;
     })
+
+    // replyService.add({
+    //     replyContent: "JS Module Test",
+    //     replyWriter: "xxxxx",
+    //     boardBno: boardBno
+    // }, function(result){
+    //     alert(result);
+    // }, function(a, b, c){console.log(a,b,c)});
+
+    // replyService.get(37, function(result){
+    //     console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+    //     console.log(result);
+    //     }
+    // );
+
+    // replyService.remove(36, function(result){
+    //     alert(result);
+    // });
+
+
+    // replyService.modify({replyContent:"ajax xxxxx", replyNumber:37}, function(result){
+    //     console.log(result);
+    // });
+
+    replyService.getList({bno:boardBno, page:1}, function(result){
+        console.log(result);
+    });
+
+//    =================================================================
+
+
 </script>
 </html>
 
