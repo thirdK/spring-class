@@ -1,6 +1,7 @@
 package com.example.board.mapper;
 
 import com.example.board.domain.vo.TboardVO;
+import com.example.board.domain.vo.Tcriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class TboardMapperTests {
 
     @Test
     public void getListTest(){
-        tboardMapper.getList();
+        tboardMapper.getList(new Tcriteria());
     }
 
     @Test

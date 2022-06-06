@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.domain.vo.TboardVO;
+import com.example.board.domain.vo.Tcriteria;
 import com.example.board.service.TboardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class TboardRestController {
 
     @PostMapping("/test5/{writer}/{re}")
     public List<TboardVO> test5(@PathVariable("writer") String writer, @PathVariable("re") String re) {
-        List<TboardVO> list = tboardService.getList();
+        List<TboardVO> list = tboardService.getList(new Tcriteria());
         List<TboardVO> list2 = new ArrayList<>();
         list.stream()
                 .filter(tboard -> tboard.getTboardWriter().equals("임태종"))

@@ -1,6 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.domain.vo.TboardVO;
+import com.example.board.domain.vo.Tcriteria;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class TboardServiceTests {
 
     @Test
     public void getListTest(){
-        tboardService.getList();
+        tboardService.getList(new Tcriteria());
     }
 
     @Test

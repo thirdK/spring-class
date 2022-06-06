@@ -1,6 +1,7 @@
 package com.example.board.domain.dao;
 
 import com.example.board.domain.vo.TboardVO;
+import com.example.board.domain.vo.Tcriteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ public class TboardDaoTests {
 
     @Test
     public void getListTest(){
-        tboardDAO.getList();
+        tboardDAO.getList(new Tcriteria());
     }
 
     @Test

@@ -14,8 +14,17 @@
     </insert>
 
     <select id="getList" resultType="tboardVO">
+        <![CDATA[
         SELECT TBOARD_NUMBER, TBOARD_TITLE, TBOARD_CONTENT, TBOARD_WRITER, TBOARD_REGISTER_DATE, TBOARD_UPDATE_DATE
-        FROM TBL_TBOARD
+        FROM
+        (
+            SELECT /*+ INDEX_DESC(TBL_TBOARD SYS_C007510)*/
+            ROWNUM RN, TBOARD_NUMBER, TBOARD_TITLE, TBOARD_CONTENT, TBOARD_WRITER, TBOARD_REGISTER_DATE, TBOARD_UPDATE_DATE
+            FROM TBL_TBOARD
+            WHERE ROWNUM <= #{pageNum} * #{amount}
+        )
+        WHERE RN > (#{pageNum} - 1) * #{amount}
+        ]]>
     </select>
 
     <delete id="delete">
