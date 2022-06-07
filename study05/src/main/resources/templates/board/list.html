@@ -1,10 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시글 목록</title>
+    <link rel="stylesheet" href="/assets/css/main.css"/>
 </head>
 <body>
-$END$
+<!-- Main -->
+<div id="main">
+    <div class="wrapper">
+        <div class="inner">
+
+            <!-- Elements -->
+            <header class="major">
+                <h1>Board</h1>
+                <p>게시판 목록</p>
+            </header>
+            <!-- Table -->
+            <h3><a href="/board/register" class="button small">글 등록</a></h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr class="tHead">
+                        <th class="boardBno">번호</th>
+                        <th class="boardTitle">제목</th>
+                        <th class="boardWriter">작성자</th>
+                        <th class="boardRegisterDate">작성일</th>
+                        <th class="boardUpdateDate">수정일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="board:${boardList}">
+                        <tr th:object="${board}">
+                            <td class="boardBno" th:text="*{boardBno}"></td>
+                            <td class="boardTitle"><a th:text="*{boardTitle}"></a></td>
+                            <td class="boardWriter" th:text="*{boardWriter}"></td>
+                            <td class="boardRegisterDate" th:text="*{boardRegisterDate}"></td>
+                            <td class="boardUpdateDate" th:text="*{boardUpdateDate}"></td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+
+                <div th:object="${pageDTO}">
+                    <form action="/board/list" name="search-form" th:object="${criteria}">
+                        <div class="fields">
+                            <div class="field">
+                                <div id="searchWrap">
+                                    <select name="type">
+                                        <option value="">검색 기준</option>
+                                        <option value="TCW" th:selected="*{type} == 'TCW'">전체</option>
+                                        <option value="T" th:selected="*{type} == 'T'">제목</option>
+                                        <option value="C" th:selected="*{type} == 'C'">내용</option>
+                                        <option value="W" th:selected="*{type} == 'W'">작성자</option>
+                                        <option value="TC" th:selected="*{type} == 'TC'">제목 또는 내용</option>
+                                        <option value="TW" th:selected="*{type} == 'TW'">제목 또는 작성자</option>
+                                        <option value="CW" th:selected="*{type} == 'CW'">내용 또는 작성자</option>
+                                    </select>
+                                    <input type="text" name="keyword" th:value="*{keyword}">
+                                    <a href="" class="search button primary icon solid fa-search">검색</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="big-width" style="text-align: center">
+                        <a class="change-page" th:if="*{prev}" th:href="*{startPage - 1}"><code>&lt;</code></a>
+                        <th:block th:each="num:${#numbers.sequence(pageDTO.startPage, pageDTO.endPage)}">
+                            <code th:if="${num == pageDTO.criteria.pageNum}" th:text="${num}"></code>
+                            <a class="change-page" th:unless="${num == pageDTO.criteria.pageNum}" th:href="${num}">
+                                <code th:text="${num}"></code>
+                            </a>
+                        </th:block>
+                        <a class="change-page" th:if="*{next}" th:href="*{endPage + 1}"><code>&gt;</code></a>
+                    </div>
+                </div>
+
+                <form action="/board/list" name="page-form" th:object="${criteria}">
+                    <input type="hidden" th:field="*{pageNum}">
+                    <input type="hidden" th:field="*{amount}">
+                    <input type="hidden" th:field="*{type}">
+                    <input type="hidden" th:field="*{keyword}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<!-- Scripts -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script th:inline="javascript">
+    $(".boardTitle>a").on("click", function (e) {
+        e.preventDefault();
+        let boardBno = $(this).parent().siblings(".boardBno").text();
+        console.log(boardBno);
+        location.href = "/board/read?boardBno=" + boardBno;
+    })
+
+    $("a.change-page").click(function(e){
+        e.preventDefault();
+        $("form[name=page-form]").find("#pageNum").val($(this).attr('href'));
+        $("form[name=page-form]").submit();
+    })
+
+    $("a.search").click(function(e){
+        e.preventDefault();
+
+    })
+</script>
 </html>

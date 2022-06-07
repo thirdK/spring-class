@@ -49,4 +49,8 @@ public class ReplyDAO {
     }
 
     public Long[] getRecentBoardBno() { return replyMapper.getRecentBoardBno(); }
+    
+    public int getTotal(Long boardBno){
+        return replyMapper.getTotal(boardBno);
+    }
 }

@@ -62,4 +62,9 @@
         ]]>
     </select>
 
+    <select id="getTotal" resultType="_int">
+        SELECT COUNT(REPLY_NUMBER) FROM TBL_REPLY
+        WHERE BOARD_BNO = #{boardBno}
+    </select>
+
 </mapper>

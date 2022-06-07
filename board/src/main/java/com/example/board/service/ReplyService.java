@@ -47,4 +47,8 @@ public class ReplyService {
     }
 
     public Long[] getRecentBoardBno() { return replyDAO.getRecentBoardBno(); }
+
+    public int getTotal(Long boardBno){
+        return replyDAO.getTotal(boardBno);
+    }
 }

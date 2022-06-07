@@ -46,7 +46,7 @@ public class TboardRestController {
         List<TboardVO> list = tboardService.getList(new Tcriteria());
         List<TboardVO> list2 = new ArrayList<>();
         list.stream()
-                .filter(tboard -> tboard.getTboardWriter().equals("임태종"))
+                .filter(tboard -> tboard.getTboardWriter().equals(writer))
                 .forEach(tboard -> {
                     tboard.setTboardWriter(re);
                     list2.add(tboard);

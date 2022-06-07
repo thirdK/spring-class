@@ -67,4 +67,9 @@ public class ReplyServiceTests {
         replyService.getList(new Criteria(2, 10), 212L)
                 .stream().map(ReplyVO::toString).forEach(log::info);
     }
+
+    @Test
+    public void getTotal(){
+        log.info("getTotal : " + replyService.getTotal(212L));
+    }
 }

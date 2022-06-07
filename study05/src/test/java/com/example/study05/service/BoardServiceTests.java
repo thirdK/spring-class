@@ -1,10 +1,13 @@
 package com.example.study05.service;
 
 import com.example.study05.domain.vo.BoardVO;
+import com.example.study05.domain.vo.Criteria;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.stream.Stream;
 
 @SpringBootTest
 @Slf4j
@@ -25,7 +28,7 @@ public class BoardServiceTests {
         log.info("===============================");
         log.info("getListTest......................");
         log.info("===============================");
-        boardService.getList().stream().map(BoardVO::toString).forEach(log::info);
+        boardService.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
     }
 
     @Test
@@ -39,7 +42,7 @@ public class BoardServiceTests {
         boardVO.setBoardContent("study05......................................");
         boardVO.setBoardWriter("study");
         boardService.register(boardVO);
-        boardService.getList().stream().map(BoardVO::toString).forEach(log::info);
+        boardService.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
     }
 
     @Test
@@ -48,12 +51,12 @@ public class BoardServiceTests {
         log.info("updateTest.....................");
         log.info("===============================");
 
-        BoardVO boardVO = boardService.read(217L);
+        BoardVO boardVO = boardService.read(210L);
         boardVO.setBoardTitle("update test");
         boardVO.setBoardContent("up up up up date date");
 
         boardService.modify(boardVO);
-        boardService.getList().stream().map(BoardVO::toString).forEach(log::info);
+        boardService.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
 
     }
 
@@ -65,6 +68,6 @@ public class BoardServiceTests {
 
         boardService.remove(217L);
 
-        boardService.getList().stream().map(BoardVO::toString).forEach(log::info);
+        boardService.getList(new Criteria()).stream().map(BoardVO::toString).forEach(log::info);
     }
 }

@@ -23,6 +23,8 @@ public interface ReplyMapper {
 
     public Long[] getRecentBoardBno();
 
+    public int getTotal(Long boardBno);
+
 
 
     //댓글 1개 조회

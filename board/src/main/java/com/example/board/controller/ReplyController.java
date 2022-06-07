@@ -7,6 +7,7 @@ package com.example.board.controller;
 * */
 
 import com.example.board.domain.vo.Criteria;
+import com.example.board.domain.vo.ReplyPageDTO;
 import com.example.board.domain.vo.ReplyVO;
 import com.example.board.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -49,9 +50,9 @@ public class ReplyController {
 
 //    댓글 전체 목록 조회
     @GetMapping("/list/{bno}/{page}")
-    public List<ReplyVO> getList(@PathVariable("bno") Long boardBno, @PathVariable("page") int pageNum){
+    public ReplyPageDTO getList(@PathVariable("bno") Long boardBno, @PathVariable("page") int pageNum){
         log.info("getList............." + boardBno);
-        return replyService.getList(new Criteria(pageNum,10), boardBno);
+        return new ReplyPageDTO(replyService.getList(new Criteria(pageNum,10), boardBno), replyService.getTotal(boardBno));
     }
 
 //    댓글 삭제

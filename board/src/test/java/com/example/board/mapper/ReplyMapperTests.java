@@ -66,4 +66,9 @@ public class ReplyMapperTests {
         replyMapper.getList(new Criteria(2, 10), 212L)
                 .stream().map(ReplyVO::toString).forEach(log::info);
     }
+
+    @Test
+    public void getTotalTest(){
+        log.info("댓글 개수 : " + replyMapper.getTotal(212L));
+    }
 }

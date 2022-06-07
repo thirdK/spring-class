@@ -51,11 +51,12 @@ public class BoardController {
         log.info("*************");
         log.info("/list");
         log.info("*************");
-        int myTotal = boardService.getMyTotal(criteria);
+
         //모델객체에 boardList, pageDTO 키로 값을 저장한다.(화면으로 넘어가서 사용이 가능하다.)
         model.addAttribute("boardList", boardService.getList(criteria));
+
 //        model.addAttribute("pageDTO", new PageDTO(criteria, boardService.getTotalPage()));
-        model.addAttribute("pageDTO", new PageDTO(criteria, myTotal));
+        model.addAttribute("pageDTO", new PageDTO(criteria, boardService.getMyTotal(criteria)));
         //pageDTO라는 페이징에 필요한 정보를 가진 객체를 생성하며 생성자로 초기화해서 저장한다.
         log.info("==============================================");
         log.info("==============================================");

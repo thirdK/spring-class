@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시글 상세보기</title>
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <style>
+        body {transform: scale(0.8);}
+        .line {
+            border-bottom: 1px solid #ff8b77;
+        }
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main -->
+    <div id="main">
+        <div class="wrapper">
+            <div class="inner">
+
+                <!-- Elements -->
+                <header class="major">
+                    <h1>Board</h1>
+                    <p>게시글 상세보기</p>
+                </header>
+                <!-- Table -->
+                <h3><a id="goList" class="button small">목록 보기</a></h3>
+                <div class="content">
+                    <div class="form">
+                        <form method="post" action="/board/remove" th:object="${board}">
+                            <div class="fields">
+                                <div class="field">
+                                    <h4>번호</h4>
+                                    <input type="text" readonly th:field="*{boardBno}"/>
+                                </div>
+                                <div class="field">
+                                    <h4>제목</h4>
+                                    <input type="text" readonly th:field="*{boardTitle}"/>
+                                </div>
+                                <div class="field">
+                                    <h4>내용</h4>
+                                    <textarea rows="6" style="resize:none" readonly th:field="*{boardContent}"></textarea>
+                                </div>
+                                <div class="field">
+                                    <h4>작성자</h4>
+                                    <input type="text" readonly th:field="*{boardWriter}"/>
+                                </div>
+                            </div>
+                            <ul class="actions special">
+                                <li>
+                                    <input type="button" class="button" value="수정" onclick="goUpdate()"/>
+                                    <input type="submit" class="button" value="삭제"/>
+                                </li>
+                            </ul>
+                            <ul class="icons">
+                                <li style="display: block">
+                                    <span class="icon solid fa-envelope"></span>
+                                    <strong>댓글</strong>
+                                </li>
+                            </ul>
+                            <a href="javascript:void(0)" class="register button primary small" style="width: 100%">댓글 등록</a>
+                            <div style="display: none" class="register-form">
+                                <div>
+                                    <h4>작성자</h4>
+                                    <input type="text" name="replier" placeholder="Replier">
+                                </div>
+                                <div>
+                                    <h4>댓글</h4>
+                                    <textarea rows="6" name="reply" placeholder="Reply" style="resize: none"></textarea>
+                                </div>
+                                <div style="text-align: right">
+                                    <a href="javascript:void(0)" class="finish button primary small">등록</a>
+                                    <a href="javascript:void(0)" class="cancel button primary small">취소</a>
+                                </div>
+                            </div>
+                            <ul class="replies"></ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- Scripts -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.dropotron.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/reply.js"></script>
+<script th:inline="javascript">
+    let boardBno = [[${board.boardBno}]];
+    let paging = [[${criteria.listLink}]];
+    const replyUL = $("ul.replies");
+
+    showList(1);
+
+    function showList(page){
+        replyService.getList({bno: boardBno, page: page}, function(total, list){
+            let str = "";
+
+            if(list == null || list.length == 0){
+                replyUL.html("");
+                return;
+            }
+
+            for(let i=0; i<list.length; i++){
+                str += "<li>";
+                str += "<strong>" + list[i].replyWriter + "</strong>";
+                str += "<div style='display: flex; justify-content: space-between;'>";
+                str += "<p>" + list[i].replyContent + "</p>"
+                str += "<p><strong>2022-06-07 10:38</strong></p>"
+                str += "</div>";
+                str += "<div class='line'></div>";
+                str += "</li>";
+            }
+            replyUL.html(str);
+            showReplyPage(total);
+        });
+    }
+
+    function showReplyPage(total){
+
+    }
+
+    $(".finish").click(function(e){
+        e.preventDefault();
+        const replyWriter = $("input[name='replier']").val();
+        const replyContent = $("textarea[name='reply']").val();
+
+        if(!replyWriter || !replyContent){
+            alert("내용을 입력해주세요.");
+            return;
+        }
+
+        replyService.add({boardBno: boardBno, replyWriter: replyWriter, replyContent: replyContent},
+        function(result){
+            $("input[name='replier']").val("");
+            $("textarea[name='reply']").val("");
+            showList(1);
+        });
+    })
+
+
+    $(".register").on("click", function(e){
+        e.preventDefault(); //기존 이벤트 없애기
+        $(".register-form").show();
+        $(this).hide();
+    });
+
+    $(".cancel").on("click", function(e){
+       e.preventDefault();
+       $(".register-form").hide();
+       $(".register").show();
+    });
+
+    function goUpdate(){
+        location.href = '/board/modify' + paging + '&boardBno=' + boardBno;
+    }
+
+    $("a#goList").click(function(e){
+        e.preventDefault();
+        location.href = "/board/list" + paging;
+    });
+
+    // replyService.add({
+    //     replyContent: "JS Module Test",
+    //     replyWriter: "hds1234",
+    //     boardBno: boardBno
+    // }, function(result){
+    //     alert(result);
+    // }, function(a, b, c){console.log(a, b, c)});
+
+    // replyService.get(101, function(reply){
+    //     console.log(reply);
+    // });
+
+    // replyService.remove(101, function(result){
+    //     alert(result);
+    // });
+
+    // replyService.modify({
+    //     rno: 31,
+    //     replyContent: "PATCH Ajax 통신 완료"
+    // }, function(result){
+    //     alert(result);
+    // });
+
+    // replyService.getList({bno: boardBno, page: 2}, function(list){
+    //     console.log(list);
+    // })
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

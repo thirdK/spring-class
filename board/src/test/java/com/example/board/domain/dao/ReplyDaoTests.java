@@ -67,4 +67,9 @@ public class ReplyDaoTests {
         replyDAO.getList(new Criteria(2, 10), 212L)
                 .stream().map(ReplyVO::toString).forEach(log::info);
     }
+
+    @Test
+    public void getTotal(){
+        log.info("aaaaa  : "+replyDAO.getTotal(212L));
+    }
 }
