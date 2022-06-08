@@ -57,6 +57,7 @@ let replyService = (function () {
             url: "/reply/" + reply.replyNumber,
             type: "patch",
             data: JSON.stringify(reply),
+            async : false,
             contentType: "application/json",
             success: function (result) {
                 if (callback) {
@@ -111,5 +112,19 @@ let replyService = (function () {
 
     }
 
-    return {add: add, get: get, remove: remove, modify: modify, getList: getList, getReplyDateByJavascript:getReplyDateByJavascript};
+    function getReplyDateByController(replyDate){
+        let result;
+        $.ajax({
+            url : "/time",
+            type : "get",
+            data : {replyDate : replyDate},
+            async : false,  //아래의 콜백함수의 연산이 모두 끝나고 나서 다음 작업이 진행된다.(동기식으로 전환)
+            success : function(time){
+                result = time;
+            }
+        });
+        return result;
+    }
+
+    return {add: add, get: get, remove: remove, modify: modify, getList: getList, getReplyDateByJavascript:getReplyDateByJavascript, getReplyDateByController:getReplyDateByController};
 })();

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html, body, div {
+            margin: 0;
+            height: 100%;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sec1 {
+            margin: 20px 0;
+            height: 100%;
+            justify-content: center;
+
+        }
+
+        .side-bar {
+            background-color: #EFEFEF;
+            width: 200px;
+            height: 100%;
+            border: 1px solid rgb(219, 219, 219);
+        }
+
+        .side-bar > .logo-box {
+            height: 70px;
+            border: 1px solid black;
+        }
+        .side-bar > .menu-box {
+            height: 50px;
+            border: 1px solid black;
+        }
+
+        .content {
+            width: 705px;
+            height: 100%;
+            border: 1px solid rgb(219, 219, 219);
+        }
+
+        .logo-box {
+
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div class="wrapper">
+        <div class="inner">
+            <!--                <header></header>-->
+            <section class="sec1 flex">
+                <div class="side-bar">
+                    <div class="logo-box">
+                        <div class="flex-center">
+                            로고
+<!--                            로고 이미지 넣기-->
+                        </div>
+                    </div>
+                    <div class="menu-box">
+                        <div class="flex-center">회원 관리</div>
+                    </div>
+                    <div class="menu-box">
+                        <div class="flex-center">프로젝트 관리</div>
+                    </div>
+                    <div class="menu-box">
+                        <div class="flex-center">인증글 관리</div>
+                    </div>
+                    <div class="menu-box">
+                        <div class="flex-center">신고 관리</div>
+                    </div>
+                </div>
+                <div class="content">
+
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

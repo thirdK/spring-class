@@ -117,24 +117,109 @@
             //숙제 each문으로 바꾸기
             // 수정되었을 때에는 수정된 날짜로 출력하기
             //출력된 시간 순으로 목록 구성하기
-            // $.each(list, function(i, reply){
-            //
-            // });
 
-            for (let i = 0; i < list.length; i++) {
+            // list.forEach(reply => {
+            //     console.log(reply);
+            //     let date = reply.replyRegisterDate == reply.replyUpdateDate ? reply.replyRegisterDate : reply.replyUpdateDate;
+            //
+            //     str += "<li>";
+            //     str += "<strong>" + reply.replyWriter + "</strong>";
+            //     str += "<div style='display: flex; justify-content: space-between;'>";
+            //     str += "<p>" + reply.replyContent + "</p>";
+            //     str += "<p><strong>" + replyService.getReplyDateByJavascript(date) + "</strong></p>";
+            //     str += "</div>";
+            //     str += "<div class='line'></div>";
+            //     str += "</li>";
+            // });
+            $.each(list, function(i, reply){
+                console.log(i);
+                let date = reply.replyRegisterDate == reply.replyUpdateDate ? reply.replyRegisterDate : reply.replyUpdateDate;
+                console.log(reply.replyNumber + " : " + date);
+
                 str += "<li>";
-                str += "<strong>" + list[i].replyWriter + "</strong>";
                 str += "<div style='display: flex; justify-content: space-between;'>";
-                str += "<p>" + list[i].replyContent + "</p>";
-                str += "<p><strong>" + replyService.getReplyDateByJavascript(list[i].replyRegisterDate) + "</strong></p>";
+                str += "<strong style='display: block;'>" + reply.replyWriter + "</strong>";
+                str += "<div class='btns'>";
+                str += "<a class='modify " + reply.replyNumber + "' style='cursor: pointer'>수정</a>"
+                str += "<a class='finish " + reply.replyNumber + "' style='display: none; cursor: pointer'>수정완료</a>"
+                str += "&nbsp;&nbsp;<a class='remove " + reply.replyNumber + "' style='cursor: pointer'>삭제</a>"
+                str += "</div>";
+                str += "</div>";
+                str += "<div style='display: flex; justify-content: space-between;'>";
+                str += "<p class='"+ reply.replyNumber +"'>" + reply.replyContent + "</p>";
+                str += "<p><strong>";
+                str += replyService.getReplyDateByController(date);
+                str += "</strong></p>";
                 str += "</div>";
                 str += "<div class='line'></div>";
                 str += "</li>";
-            }
+            });
+
+            // for (let i = 0; i < list.length; i++) {
+            //     str += "<li>";
+            //     str += "<strong>" + list[i].replyWriter + "</strong>";
+            //     str += "<div style='display: flex; justify-content: space-between;'>";
+            //     str += "<p>" + list[i].replyContent + "</p>";
+            //     str += "<p><strong>" + replyService.getReplyDateByJavascript(list[i].replyRegisterDate) + "</strong></p>";
+            //     str += "</div>";
+            //     str += "<div class='line'></div>";
+            //     str += "</li>";
+            // }
             replyUL.html(str);
             showReplyPage(total);
         });
     }
+    //댓글 삭제
+    $(".replies").on("click", "div.btns a.remove", function(e){
+        e.preventDefault();
+        if(check){
+            alert("이미 수정중인 댓글이 있습니다.");
+            return;
+        }
+        replyService.remove(this.classList[1], function(result){
+            alert(result);
+            showList(pageNum);
+        });
+    });
+
+    let check = false;
+
+    //댓글 수정
+    $(".replies").on("click", "div.btns a.modify", function(e){
+        e.preventDefault();
+        if(check){
+            alert("이미 수정중인 댓글이 있습니다.");
+            return;
+        }
+
+        let replyNumber = this.classList[1];
+        let str = "";
+
+        $("a." + replyNumber).show();
+        $(this).hide();
+
+        str += "<textarea class ='" + replyNumber +"' style='resize: none;'>";
+        str += $("p." + replyNumber).text();
+        str += "</textarea>";
+
+        $("p." + replyNumber).replaceWith(str);
+        $("textarea." + replyNumber).css("width", "75%");
+        check = true;
+    });
+
+    //수정 완료
+    $(".replies").on("click", "div.btns a.finish", function(e){
+        e.preventDefault();
+        let replyNumber = this.classList[1];
+        let replyContent = $("textarea."+replyNumber).val();
+
+        replyService.modify({replyNumber: replyNumber, replyContent:replyContent}, function (result) {
+            alert(result);
+        });
+        showList(pageNum);
+        check = false;
+    });
+
 
     function showReplyPage(total){
         let endPage = Math.ceil(pageNum / 10.0) * 10;
@@ -170,7 +255,7 @@
         e.preventDefault();
         pageNum = $(this).attr("href");
         showList(pageNum);
-    })
+    });
 
 
     $(".register").click(function(e){
@@ -203,7 +288,7 @@
             $(".register").show();
         }
         )
-    })
+    });
 
     $(document).ready(function () {
         console.log(replyService);
@@ -216,7 +301,7 @@
     $("a#goList").click(function (e) {
         e.preventDefault();
         location.href = "/board/list" + paging;
-    })
+    });
 
 
     // replyService.add({
@@ -243,6 +328,7 @@
     // });
 
     replyService.getList({bno: boardBno, page: 1}, function (result) {
+        console.log("getList!!!!")
         console.log(result);
     });
 
